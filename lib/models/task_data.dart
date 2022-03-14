@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todoey_flutter/models/task.dart';
 import 'dart:collection';
 
+final _firestore = FirebaseFirestore.instance;
+
 class TaskData extends ChangeNotifier {
+  String hello = '';
   List<Task> _tasks = [
     Task(name: 'Buy Milk'),
     Task(name: 'Buy eggs'),
