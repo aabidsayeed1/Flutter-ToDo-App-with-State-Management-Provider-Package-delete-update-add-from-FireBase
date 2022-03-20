@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey_flutter/models/task_data.dart';
+import 'package:todoey_flutter/screens/forgot-password-screen.dart';
 import 'package:todoey_flutter/screens/login-screen.dart';
 import 'package:todoey_flutter/screens/registration-screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         routes: {
           Login.id: (context) => Login(),
           Registration.id: (context) => Registration(),
+          ForgotPassword.id: (context) => ForgotPassword(),
         },
         // TasksScreen(),
       ),

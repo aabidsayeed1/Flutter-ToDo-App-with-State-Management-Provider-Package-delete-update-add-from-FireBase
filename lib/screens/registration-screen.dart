@@ -165,7 +165,7 @@ class _RegistrationState extends State<Registration> {
                     textleft: 'Already have an Account?',
                     text: ' Sign In',
                     onPress: () {
-                      Navigator.pushNamed(context, Login.id);
+                      Navigator.pop(context);
                     },
                   ),
                 ],

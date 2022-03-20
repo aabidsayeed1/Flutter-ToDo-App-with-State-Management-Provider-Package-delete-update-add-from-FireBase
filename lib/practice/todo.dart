@@ -144,6 +144,8 @@ class _TodoState extends State<Todo> {
                       // direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
                         setState(() {
+                          title = documentSnapshot?['todoTitle'];
+                          description = documentSnapshot?['todoDesc'];
                           switch (direction) {
                             case DismissDirection.endToStart:
                               deleteTodo((documentSnapshot != null)
@@ -155,10 +157,15 @@ class _TodoState extends State<Todo> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Add Todo'),
+                                    backgroundColor: Color(0xff24D0C6),
+                                    title: Text(
+                                      'Update Task',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                      ),
+                                    ),
                                     content: Container(
-                                      decoration: BoxDecoration(
-                                          color: Color(0xff50C2C9)),
                                       width: 40,
                                       height: 100,
                                       child: Column(children: [
@@ -189,7 +196,9 @@ class _TodoState extends State<Todo> {
                                         child: Text(
                                           'Update',
                                           style: TextStyle(
-                                              color: Color(0xff50C2C9)),
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -246,11 +255,20 @@ class _TodoState extends State<Todo> {
                           ),
                           leading: IconButton(
                               onPressed: () {
+                                title = documentSnapshot?['todoTitle'];
+                                description = documentSnapshot?['todoDesc'];
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('Add Todo'),
+                                      backgroundColor: Color(0xff24D0C6),
+                                      title: Text(
+                                        'Update Task',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                        ),
+                                      ),
                                       content: Container(
                                         width: 40,
                                         height: 100,
@@ -277,9 +295,16 @@ class _TodoState extends State<Todo> {
                                                           .data?.docs[index].id)
                                                       : '');
                                             });
+
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Update'),
+                                          child: Text(
+                                            'Update',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     );
@@ -333,11 +358,19 @@ class _TodoState extends State<Todo> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff50C2C9),
         onPressed: () {
+          title = '';
+          description = '';
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Add Todo'),
+                title: Text(
+                  'Add Todo',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Color(0xff24D0C6),
+                  ),
+                ),
                 content: Container(
                   width: 40,
                   height: 100,
@@ -362,7 +395,13 @@ class _TodoState extends State<Todo> {
                       });
                       Navigator.pop(context);
                     },
-                    child: Text('Add'),
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff24D0C6),
+                      ),
+                    ),
                   ),
                 ],
               );

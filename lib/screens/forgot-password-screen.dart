@@ -2,32 +2,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:todoey_flutter/practice/todo.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:todoey_flutter/screens/forgot-password-screen.dart';
-
+import 'package:todoey_flutter/screens/login-screen.dart';
 import '../widgets/my-widgets.dart';
-import 'registration-screen.dart';
 
-class Login extends StatefulWidget {
-  static String id = 'login';
+class ForgotPassword extends StatefulWidget {
+  static String id = 'forgot';
 
   @override
-  State<Login> createState() => _LoginState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _LoginState extends State<Login> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   // form key
   final _formKey = GlobalKey<FormState>();
   // editing controller
   final emailC = TextEditingController();
-  final passwordC = TextEditingController();
   //fireBase
   final _auth = FirebaseAuth.instance;
   //String for displaying the error Message
   String? errorMessage;
-  // user Credential for keeping user loggedIn
-  final storage = FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,22 +39,22 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 110),
                     width: double.infinity,
                     child: const Text(
-                      'Welcome Back!',
+                      'Forgot password!',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ),
                   SizedBox(
-                    height: 49,
+                    height: 80,
                   ),
                   Container(
-                    width: 156,
-                    height: 186,
-                    margin: EdgeInsets.only(left: 20),
-                    child: Image.asset('images/login.png'),
+                    width: 200,
+                    height: 200,
+                    margin: EdgeInsets.only(right: 15),
+                    child: Image.asset('images/reset.png'),
                   ),
                   SizedBox(
-                    height: 71,
+                    height: 80,
                   ),
                   TextFields(
                       hindText: 'Enter Your Email',
@@ -81,56 +74,22 @@ class _LoginState extends State<Login> {
                         emailC.text = value!;
                       }),
                   SizedBox(
-                    height: 28,
-                  ),
-                  TextFields(
-                    hindText: 'Enter Your Password',
-                    controller: passwordC,
-                    validator: (value) {
-                      RegExp regex = RegExp(r'^.{6,}$');
-                      if (value!.isEmpty) {
-                        return ("Password is required for login");
-                      }
-                      if (!regex.hasMatch(value)) {
-                        return ("Enter Valid Password(Min. 6 Character)");
-                      }
-                    },
-                    onsaved: (value) {
-                      passwordC.text = value;
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, ForgotPassword.id);
-                    },
-                    child: Text(
-                      'Forgot password',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff24D0C6),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 9,
+                    height: 30,
                   ),
                   MyButtons(
-                    buttonName: 'Sign In',
+                    buttonName: 'Reset',
                     onPress: () {
-                      signIn(emailC.text, passwordC.text);
+                      resetPassword(emailC.text);
                     },
                   ),
                   SizedBox(
-                    height: 28,
+                    height: 35,
                   ),
                   MyRichText(
-                    textleft: "Don't have an Account",
-                    text: ' Sign Up',
+                    textleft: "Go back to ",
+                    text: ' Sign In',
                     onPress: () {
-                      Navigator.pushNamed(context, Registration.id);
+                      Navigator.pushNamed(context, Login.id);
                     },
                   ),
                 ],
@@ -142,26 +101,20 @@ class _LoginState extends State<Login> {
     );
   }
 
-  // login function
-  void signIn(String email, String password) async {
+  // resetPassword function
+  void resetPassword(String email) async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        await storage
-            .write(key: 'uid', value: userCredential.user?.uid)
-            .then((uid) => {
-                  Fluttertoast.showToast(
-                    msg: "Login Successful",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.SNACKBAR,
-                    backgroundColor: Colors.blueGrey,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Todo())),
-                });
+        await _auth.sendPasswordResetEmail(email: email).then((uid) => {
+              Fluttertoast.showToast(
+                msg: "reset password link send to your $email",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                backgroundColor: Colors.blueGrey,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              ),
+            });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":
